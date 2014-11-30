@@ -15,3 +15,15 @@ a {
 	color: white;
 	font-weight: bold;
 }
+
+#editOrder form{
+		width: 15%;
+}
+
+#takenTime{
+	background-color: green;
+}
+
+#upTime{
+	background-color: grey;
+}

@@ -6,4 +6,77 @@
 	<p>Find an Order</p>
 </div>
 
-{{order}}
+<div id="currentOrderDiv" ng-if="!(order.status.statusNo == 1)"> 
+	<table>
+		<tr>
+			<th colspan="2">Your Order</th>
+		</tr>
+		<tr>
+			<td>Restaurant</td>
+			<td>{{order.restaurant}}</td>
+		</tr>
+		<tr>
+			<td>Order</td>
+			<td>{{order.orderItems}}</td>
+		</tr>
+		<tr>
+			<td>Other Details</td>
+			<td>{{order.details}}</td>
+		</tr>
+		<tr>
+			<td>Delivery Rate</td>
+			<td>{{order.pay}}</td>
+		</tr>
+		<tr>
+			<td>Deliver To</td>
+			<td>{{order.address}}</td>
+		</tr>
+		<tr ng-if="order.status.statusNo == 3">
+			<td>Status</td>
+			<td>Taken</td>
+		</tr>
+		<tr ng-if="order.status.statusNo == 2">
+			<td>Status</td>
+			<td>Up</td>
+		</tr>
+		<tr id="takenTime" ng-if="order.status.statusNo == 3">
+			<td colspan="2">Time Since Taken {{timeSince}}</td>
+		</tr>
+		<tr id="upTime" ng-if="order.status.statusNo == 2">
+			<td colspan="2">Time Since Ordered {{timeSince}}</td>
+		</tr>
+	</table>
+	
+	<p>Orders are automatically removed if not taken after an hour. 
+	Taken orders will remain for 2 hours. Edits can only be done before
+	an order is taken.</p>
+	
+</div>
+
+<div ng-if="!(order.status.statusNo == 3)" id="editOrder">
+	<p ng-if="order.status.statusNo == 2">Edit Order</p>
+	<p ng-if="order.status.statusNo == 1">Create Order</p>
+	
+	<form>
+		<label for="rest">Restaurant</label> 
+		<input id="rest" type="text" ng-model="order.restaurant">
+		<label for="add">Delivery Address</label> 
+		<input id="add"type="text" ng-model="order.address">
+		<label for="dr">Delivery Rate</label> 
+		<input id="dr" type="text" ng-model="order.pay">
+		<label for="or">Order</label> 
+		<textarea id="or" ng-model="order.orderItems">
+		</textarea>
+		<label for="det">Other Details</label>
+		<textarea id="det" ng-model="order.details">
+		</textarea>
+		
+		<button ng-click="submitOrder()">
+  				Submit Order
+		</button>
+		<button ng-click="cancelOrder()" 
+				ng-disabled="order.status.statusNo == 1">
+  				Cancel Order
+		</button>
+	</form>
+</div>

@@ -28,13 +28,12 @@ var usersSchema = mongoose.Schema({
 	 order: {
 		 orderItems : String,
 		 restaurant : String,
-		 pay : String,
+		 pay : { type: Number, min: 0 },
 		 address : String,
 		 details : String,
-		 timeMade : String,
 		 status : {
-     		statusString :  String,
-    		timeTaken : String
+     		statusNo :  { type: Number, min: 1, max: 3 },
+    		time : String
     	 }
 	 }
 });
@@ -81,13 +80,12 @@ passport.use(new FacebookStrategy({
 	                order: {
 	                	orderItems : "",
 	                	restaurant : "",
-	                	pay : "",
+	                	pay : 0,
 	                	address : "",
 	                	details : "",
-	                	timeMade : "",
 	                	status : {
-	                		statusString : "",
-	                		timeTaken : ""
+	                		statusNo : 1,
+	                		time : ""
 	                	}
 	        	 }
 	            });

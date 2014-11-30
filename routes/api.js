@@ -33,13 +33,14 @@ router.get('/order', ensureAuthenticated, function(req, res){
 
 /* PUT for Update/Delete/Create a new order. */
 router.put('/order', ensureAuthenticated, function(req, res){
+	
 	var User = req.db;
 	User.findOne({_id: req.user._id }, function(err, user){
 		if(err){
 			return res.send(err);
 		}
 		
-		user.order = params.order;
+		user.order = req.body;
 		
 		user.save(function(err){
 			if(err){
