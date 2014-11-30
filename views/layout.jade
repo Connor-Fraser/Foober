@@ -1,0 +1,13 @@
+doctype html
+html(ng-app='Foober')
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js')
+		script(src='http://maps.google.com/maps/api/js?sensor=true')
+		script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js")
+		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js")
+		script(src='/js/mainmodule.js')
+		
+	body(ng-controller='pageController') 
+	block content

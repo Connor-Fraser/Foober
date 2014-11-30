@@ -1,0 +1,6 @@
+extends layout
+
+block content
+	h1(ng-click='name()') Foober
+	|{{displayName}}
+	div(ng-view='/partials/login.html')
