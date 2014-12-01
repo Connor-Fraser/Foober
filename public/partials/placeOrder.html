@@ -60,9 +60,13 @@
 	<form>
 		<label for="rest">Restaurant</label> 
 		<input id="rest" type="text" ng-model="order.restaurant">
-		<label for="add">Delivery Address</label> 
+		<label for="add">Deliver To: Address</label> 
 		<input id="add"type="text" ng-model="order.address">
-		<label for="dr">Delivery Rate</label> 
+		<label for="city">City</label> 
+		<input id="city" type="text" ng-model="order.city">
+		<label for="country">Country</label> 
+		<input id="country" type="text" ng-model="order.country">
+		<label for="dr">Payment Upon Delivery</label> 
 		<input id="dr" type="text" ng-model="order.pay">
 		<label for="or">Order</label> 
 		<textarea id="or" ng-model="order.orderItems">

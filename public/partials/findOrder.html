@@ -6,3 +6,18 @@
 <div id='findOrder' class='selected'>
 	<p>Find an Order</p>
 </div>
+
+<div id="finderForm">
+	<form>
+		<label for="radius">Your radius of delivery in meters (max of 5km)</label> 
+		<input id="radius" type="text" ng-model="orderRadius">
+
+		<button ng-click="loadMap()">
+  				Submit
+		</button>
+	</form>
+</div>
+
+<div id="map-canvas">
+
+</div>

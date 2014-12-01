@@ -30,11 +30,17 @@ var usersSchema = mongoose.Schema({
 		 restaurant : String,
 		 pay : { type: Number, min: 0 },
 		 address : String,
+		 city : String,
+		 country : String,
 		 details : String,
 		 status : {
      		statusNo :  { type: Number, min: 1, max: 3 },
     		time : String
-    	 }
+    	 },
+    	 addressGeo : {
+     		lat: {type: Number, min: -85.05115, max: 85 },
+     		lng: {type: Number, min: -180, max: 180}
+     	}
 	 }
 });
 
@@ -82,10 +88,16 @@ passport.use(new FacebookStrategy({
 	                	restaurant : "",
 	                	pay : 0,
 	                	address : "",
+	                	city: "",
+	                	country: "",
 	                	details : "",
 	                	status : {
 	                		statusNo : 1,
 	                		time : ""
+	                	},
+	                	addressGeo : {
+	                		lat:0,
+	                		lng:0
 	                	}
 	        	 }
 	            });

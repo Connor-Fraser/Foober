@@ -27,3 +27,7 @@ a {
 #upTime{
 	background-color: grey;
 }
+
+#map-canvas{
+	height:350px;
+}
