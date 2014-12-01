@@ -98,8 +98,6 @@ Foober.controller('placeController', function($scope, $location, $http, $interva
     $scope.submitOrder = function(){
        	
     	var newOrder = $scope.order;
-    	alert($scope.order.addressGeo.lat);
-    	alert($scope.order.addressGeo.lng);
     	var addressString = newOrder.address + " " + newOrder.city + " " + newOrder.country;
     	
     	var d = new Date();
@@ -112,8 +110,6 @@ Foober.controller('placeController', function($scope, $location, $http, $interva
     	    if (status == google.maps.GeocoderStatus.OK) {
     	    	newOrder.addressGeo.lat = results[0].geometry.location.lat();
     	    	newOrder.addressGeo.lng = results[0].geometry.location.lng();
-    	    	alert(newOrder.addressGeo.lat);
-    	    	alert(newOrder.addressGeo.lng);
     	    	
     	    	$http({
         		    url: 'http://localhost:3000/api/order',
@@ -200,10 +196,34 @@ Foober.controller('findController', function($scope, $location, $http) {
     $scope.placeOrder = function(){
     	$location.path('/placeorder');
     };
-	
+    
+    $scope.takeOrder = function(index){
+    	
+    	var order = $scope.ordersToTake[index];
+    	alert(order._id);
+    	
+    	$http({
+		    url: 'http://localhost:3000/api/takeorder',
+		    method: 'Put',
+		    data: {_id : order._id},
+		    dataType: 'JSON'
+    	}).success(function(data) {
+    		$scope.loadMap();
+    	})
+    	.error(function(err){
+    		$location.path('/login');
+    	});
+    };
+
+    //initialize orderRadius value
 	$scope.orderRadius = 1000;
 	
+	//load the map on radius submit
 	$scope.loadMap = function(){
+		//order to take array for selecting orders
+		$scope.ordersToTake = [];
+		
+		//map loading initalization
 		var siberia = new google.maps.LatLng(60, 105);
 		var initialLocation = new google.maps.LatLng(30,50);
 		var browserSupportFlag =  new Boolean();
@@ -227,15 +247,15 @@ Foober.controller('findController', function($scope, $location, $http) {
 				map.setCenter(initialLocation);
 				
 				//place marker of user's location
-				marker = new google.maps.Marker({
+				//TODO: uncomment when distinct marker is prepared
+				/*marker = new google.maps.Marker({
 					draggable:false,
 					map: map,
 					title: "You!",
 					animation: google.maps.Animation.DROP,
 					position: initialLocation
-				});
-					
-				marker.setMap(map);
+				});			
+				marker.setMap(map);*/
 				
 				//get the current radius size and limit it to 10km if necessary
 				$scope.orderRadius = parseInt($scope.orderRadius);
@@ -253,7 +273,68 @@ Foober.controller('findController', function($scope, $location, $http) {
 			        center: initialLocation,
 			    	radius: $scope.orderRadius
 			    };
+			    
 			    var orderCircle = new google.maps.Circle(circleOptions);
+			   
+			    //get list of available orders
+			    $http.get("http://localhost:3000/api/findorder")
+			    .success(function(data) {
+			    	
+			    	$scope.openOrders = data;
+			    	
+			    	var bounds = orderCircle.getBounds();
+			    	var infowindow = new google.maps.InfoWindow();
+			    	var marker;
+			    	var displayNum = 0;
+			    	
+			    	for (i = 0; i < $scope.openOrders.length; i++) { 
+			    		
+			    		//place coordinates of returned orders
+			    		//TODO: alter this when api returns less data
+			    		var orderLat = $scope.openOrders[i].order.addressGeo.lat; 
+			    		var orderLng = $scope.openOrders[i].order.addressGeo.lng;
+			    		var orderPosition = new google.maps.LatLng(orderLat, orderLng); 		
+			    		
+			    		if(bounds.contains(orderPosition)){ 
+			    			
+			    			marker = new google.maps.Marker({
+								draggable:false,
+								map: map,
+								title: "Order " + displayNum,
+								animation: google.maps.Animation.DROP,
+								position: orderPosition
+							});			
+			    			//TODO: Blegh
+							marker.setMap(map);
+							displayNum++;
+							
+							//content of each order's info window
+				    		var contentString = '<div id="content">'+
+				    	      '<div id="siteNotice">'+
+				    	      '</div>'+
+				    	      '<h1 id="firstHeading" class="firstHeading">Order '+i+'</h1>'+
+				    	      '<div id="bodyContent">'+
+				    	      '<p> Restaurant: ' + $scope.openOrders[i].order.restaurant + '</p>' +
+				    	      '<p> Order: ' + $scope.openOrders[i].order.orderItems + '</p>' +
+				    	      '<p> Pay: ' + $scope.openOrders[i].order.pay + '</p>' +
+				    	      '<p> Address: ' + $scope.openOrders[i].order.address + '</p>' +
+				    	      '<p> Additional Details: ' + $scope.openOrders[i].order.details + '</p>' +
+				    	      '</div>'+
+				    	      '</div>';
+							
+							google.maps.event.addListener(marker, 'click', function() {
+								   infowindow.open(map,marker);
+								   infowindow.setContent(contentString);
+							});
+							
+							$scope.ordersToTake.push($scope.openOrders[i]);
+							
+			    		}		    		
+			    	}
+			    })
+			    .error(function(err){
+			    	$location.path('/login');
+			    });
 				
 				
 			//in case of error	
@@ -291,3 +372,6 @@ Foober.controller('findController', function($scope, $location, $http) {
     
 // End Map generation =======================================================================================
 });
+
+
+

@@ -21,3 +21,7 @@
 <div id="map-canvas">
 
 </div>
+
+<div id="orderTaker">
+	<li ng-repeat="order in ordersToTake" ng-click="takeOrder($index)"> Take Order {{$index}} </li>
+</div>

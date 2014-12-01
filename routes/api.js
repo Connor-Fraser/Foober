@@ -52,30 +52,38 @@ router.put('/order', ensureAuthenticated, function(req, res){
 	});
 });
 
-
-/* GET get the data for orders with a certain criteria*/
-router.get('/findorder/:data', ensureAuthenticated, function(req, res){
-	//incorporate criteria for limiting returned amount
+//TODO: limit returned orders based on req location
+//TODO: make it so whole user is not returned, and just order instead (currently _id is used as orderid)
+/* GET get the data for orders that are currently up*/
+router.get('/findorder', ensureAuthenticated, function(req, res){
+	
 	var User = req.db;
-	User.find(function(err, orders){
+	User.find({'order.status.statusNo' : 2 }, function(err, orders){ 
+		
 		if(err){
+			console.log(err);
 			return res.send(err);
 		}
-		
 		res.json(orders);
 	});
 });
 
 /*PUT new order status for someone else's order */
-router.put('/findorder/:id', ensureAuthenticated, function(req, res){
+router.put('/takeorder', ensureAuthenticated, function(req, res){
+	console.log("in take order");
+	console.log(req.body);
+	console.log(req.body._id);
+	
 	var User = req.db;
-	User.findOne({_id: req.params.id }, function(err, user){
+	User.findOne({_id: req.body._id }, function(err, user){
 		if(err){
 			return res.send(err);
 		}
 		
-		user.order.status = "taken";
-		user.order.timeTaken = "" + new Date.getTime();
+		user.order.status.statusNo = 3;
+		var d = new Date;
+		d = d.getTime();
+		user.order.status.time = String(d);
 		
 		user.save(function(err){
 			if(err){
