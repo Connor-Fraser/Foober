@@ -3,8 +3,8 @@
  */
 
 var Foober = angular.module('Foober',['ngRoute']);
-//var siteUrl = 'http://localhost:3000';
-var siteUrl = 'http://104.131.178.87';
+var siteUrl = 'http://localhost:3000';
+//var siteUrl = 'http://104.131.178.87';
 
 // configure our routes					
 Foober.config(function($routeProvider)  {

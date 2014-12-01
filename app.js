@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 GLOBAL.passport = require('passport');
-//GLOBAL.siteUrl = 'http://localhost:3000';
-GLOBAL.siteUrl = 'http://104.131.178.87:3000';
+GLOBAL.siteUrl = 'http://localhost:3000';
+//GLOBAL.siteUrl = 'http://104.131.178.87:3000';
 var FacebookStrategy = require('passport-facebook').Strategy;
 
 var routes = require('./routes/index');
