@@ -3,6 +3,8 @@
  */
 
 var Foober = angular.module('Foober',['ngRoute']);
+//var siteUrl = 'http://localhost:3000';
+var siteUrl = 'http://104.131.178.87';
 
 // configure our routes					
 Foober.config(function($routeProvider)  {
@@ -44,7 +46,7 @@ Foober.controller('pageController', function($scope, $location, $http){
 	$scope.displayName = 'User';
 	
 	//get user data to populate displayName header, otherwise route to login
-	$http.get("http://localhost:3000/api/account")
+	$http.get(siteUrl + '/api/account')
 	.success(function(data) {
 		data = data.replace(/\"/g, "");
 		$scope.displayName = data;
@@ -81,7 +83,7 @@ Foober.controller('loginController', function($scope) {
 // Controller for user's order
 Foober.controller('placeController', function($scope, $location, $http, $interval) {
 	//get your order information, go to login if not authenticated
-	$http.get("http://localhost:3000/api/order")
+	$http.get(siteUrl + '/api/order')
     .success(function(data) {
     	$scope.order = data;
     })
@@ -112,7 +114,7 @@ Foober.controller('placeController', function($scope, $location, $http, $interva
     	    	newOrder.addressGeo.lng = results[0].geometry.location.lng();
     	    	
     	    	$http({
-        		    url: 'http://localhost:3000/api/order',
+        		    url: siteUrl+'/api/order',
         		    method: 'Put',
         		    data: newOrder,
         		    dataType: 'JSON'
@@ -143,7 +145,7 @@ Foober.controller('placeController', function($scope, $location, $http, $interva
     	
     	
     	$http({
-		    url: 'http://localhost:3000/api/order',
+		    url: siteUrl + '/api/order',
 		    method: 'Put',
 		    data: cancelledOrder,
 		    dataType: 'JSON'
@@ -203,7 +205,7 @@ Foober.controller('findController', function($scope, $location, $http) {
     	alert(order._id);
     	
     	$http({
-		    url: 'http://localhost:3000/api/takeorder',
+		    url: siteUrl + '/api/takeorder',
 		    method: 'Put',
 		    data: {_id : order._id},
 		    dataType: 'JSON'
@@ -277,7 +279,7 @@ Foober.controller('findController', function($scope, $location, $http) {
 			    var orderCircle = new google.maps.Circle(circleOptions);
 			   
 			    //get list of available orders
-			    $http.get("http://localhost:3000/api/findorder")
+			    $http.get(siteUrl + '/api/findorder')
 			    .success(function(data) {
 			    	
 			    	$scope.openOrders = data;
@@ -372,6 +374,3 @@ Foober.controller('findController', function($scope, $location, $http) {
     
 // End Map generation =======================================================================================
 });
-
-
-

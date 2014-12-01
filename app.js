@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 GLOBAL.passport = require('passport');
+//GLOBAL.siteUrl = 'http://localhost:3000';
+GLOBAL.siteUrl = 'http://104.131.178.87:3000';
 var FacebookStrategy = require('passport-facebook').Strategy;
 
 var routes = require('./routes/index');
@@ -66,7 +68,7 @@ app.use(passport.session());
 passport.use(new FacebookStrategy({
 	  clientID: "292198040988523",
 	  clientSecret: "b8cd20a265a3cfcf25a399cbd71c8e6d",
-	  callbackURL: "http://localhost:3000/api/auth/facebook/callback"
+	  callbackURL: siteUrl + '/api/auth/facebook/callback'
 	},
 
 	function(accessToken, refreshToken, profile, done) {
