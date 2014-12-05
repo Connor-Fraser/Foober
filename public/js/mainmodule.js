@@ -259,7 +259,7 @@ Foober.controller('findController', function($scope, $location, $http) {
 				});			
 				marker.setMap(map);*/
 				
-				//get the current radius size and limit it to 10km if necessary
+				//get the current radius size and limit it to 5km if necessary
 				$scope.orderRadius = parseInt($scope.orderRadius);
 				if($scope.orderRadius > 5000)
 					$scope.orderRadius = 5000;
@@ -323,11 +323,8 @@ Foober.controller('findController', function($scope, $location, $http) {
 				    	      '<p> Additional Details: ' + $scope.openOrders[i].order.details + '</p>' +
 				    	      '</div>'+
 				    	      '</div>';
-							
-							google.maps.event.addListener(marker, 'click', function() {
-								   infowindow.open(map,marker);
-								   infowindow.setContent(contentString);
-							});
+				    		
+				    		bindInfoWindow(marker, map, infowindow, contentString); 
 							
 							$scope.ordersToTake.push($scope.openOrders[i]);
 							
@@ -371,6 +368,13 @@ Foober.controller('findController', function($scope, $location, $http) {
 			marker.setMap(map);
 		};
 	};
+	
+	function bindInfoWindow(marker, map, infowindow, html) {
+		google.maps.event.addListener(marker, 'click', function() {
+	        infowindow.setContent(html);
+	        infowindow.open(map, marker);
+	    });
+	} 
     
 // End Map generation =======================================================================================
 });
